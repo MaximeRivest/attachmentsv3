@@ -1,0 +1,8 @@
+---
+title: Attachments
+---
+
+Welcome to the documentation for the `attachments` Python library.
+
+Use the navbar to find the Getting Started guide, longer guides, and the API reference.
+

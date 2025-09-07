@@ -1,0 +1,43 @@
+[build-system]
+requires = ["uv_build>=0.8.15,<0.9.0"]
+build-backend = "uv_build"
+
+[project]
+name = "attachments"
+version = "0.1.0"
+description = "A modern Python library."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+docs = [
+  "quartodoc>=0.3",
+  "jupyter",
+  "ipykernel",
+]
+
+
+[dependency-groups]
+dev = [
+  "ruff",
+  "pytest",
+  "pytest-cov",
+  "pre-commit",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+extend-exclude = ["docs/_freeze", "build", "dist"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --strict-markers --color=yes --cov=attachments --cov-report=term-missing"
+testpaths = ["tests"]

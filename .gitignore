@@ -1,0 +1,24 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Caches
+.ruff_cache/
+.pytest_cache/
+
+# Lockfile
+# Commit uv.lock for reproducible environments and CI checks
+
+# Quarto build artifacts (site preview/build outputs)
+docs/_site/
+docs/.quarto/
+# If you choose to execute notebooks locally and publish cached results,
+# you may commit docs/_freeze/. Otherwise, ignore it:
+docs/_freeze/

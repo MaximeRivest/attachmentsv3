@@ -1,0 +1,7 @@
+# Function reference {.doc .doc-index}
+
+## API Reference
+
+| | |
+| --- | --- |
+| [testy](testy.qmd#attachments.testy) | Test function. |
