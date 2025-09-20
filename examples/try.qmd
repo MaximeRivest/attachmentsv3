@@ -6,10 +6,15 @@ from attachments import att, unpack, processors
 
 ```{python}
 r = unpack("https://arxiv.org/pdf/2310.03714")
+r
 ```
 
 ```{python}
-processors['.pdf'](r)
+processors['.pdf'](r[0][1])
+```
+
+```{python}
+att("https://arxiv.org/pdf/2310.03714", render_images = True)
 ```
 
 ```{python}

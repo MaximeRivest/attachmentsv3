@@ -25,5 +25,8 @@ def register_processor(key: str, func: Callable[[bytes], dict]) -> None:
 # Import modules to trigger self-registration
 from . import text as _text  # noqa: E402,F401
 from . import xlsx as _xlsx  # noqa: E402,F401
+from . import pdf as _pdf  # noqa: E402,F401
+
+
 
 __all__ = ["processors", "register_processor"]

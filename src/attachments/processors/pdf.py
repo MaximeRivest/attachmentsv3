@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import io
 from typing import Any, Optional
+from . import register_processor
 
 
 def _extract_text_with_pypdf_or_pyPDF2(
@@ -309,3 +310,6 @@ def process_pdf(
         "flags": flags,
     }
     return artifact
+
+
+register_processor(".pdf", process_pdf)
