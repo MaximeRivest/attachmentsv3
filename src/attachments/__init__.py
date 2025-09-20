@@ -1,13 +1,32 @@
-"""attachments: A modern Python library.
+"""
+attachments: Turn any file or collection into LLM-ready artifacts (minimal core)
 
-This package is structured with a src/ layout and configured
-to use uv for environment and dependency management and ruff
-for linting and formatting.
+This minimal build implements:
+- Unpacker: local directory, local files, ZIP, TAR.* (tgz/tbz2/txz), and
+  GitHub repo cloning (via `git` CLI).
+- Processors: catch-all text processor and an Excel (.xlsx) processor.
+- Registry for processors and for custom unpack handlers.
+
+Public API:
+- att(input: str | PathLike, **options) -> list[dict]
+- unpack(input: str, extra_handlers: dict[str, callable] | None = None)
+  -> list[tuple[str, bytes]]
+- processors (dict) and register_processor(ext, func)
+- register_unpack_handler(prefix, func)
 """
 
-from .tst import tst as testy
+from .core import att
+from .processors import processors, register_processor
+from .unpack import extra_unpack_handlers, register_unpack_handler, unpack
 
-__all__: list[str] = ["testy"]
+__all__ = [
+    "att",
+    "unpack",
+    "processors",
+    "register_processor",
+    "register_unpack_handler",
+    "extra_unpack_handlers",
+]
 
 # Managed via [tool.hatch.version] in pyproject.toml
 __version__ = "0.1.0"

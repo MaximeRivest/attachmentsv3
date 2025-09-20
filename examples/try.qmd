@@ -1,0 +1,27 @@
+
+```{python}
+from attachments import att, unpack, processors
+```
+
+
+```{python}
+r = unpack("https://arxiv.org/pdf/2310.03714")
+```
+
+```{python}
+processors['.pdf'](r)
+```
+
+```{python}
+r = unpack("https://github.com/stanfordnlp/dspy/blob/46bb389ad732700b7fd9c2c82fbfa59bd798722e/dspy/primitives/prediction.py")
+processors['.html'](r[0][1])
+```
+
+```{python}
+r = unpack('https://github.com/stanfordnlp/dspy/raw/46bb389ad732700b7fd9c2c82fbfa59bd798722e/dspy/primitives/prediction.py')
+processors['.py'](r[0][1])
+```
+
+```{python}
+att('https://github.com/stanfordnlp/dspy/raw/46bb389ad732700b7fd9c2c82fbfa59bd798722e/dspy/primitives/prediction.py')
+```

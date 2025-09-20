@@ -25,6 +25,7 @@ git clone <your-fork-or-repo-url>.git attachments
 cd attachments
 
 # 2) Create the venv and install deps (uv)
+#    (Installs dev deps, including optional processor libs used by tests.)
 uv sync
 
 # 3) Sanity checks
@@ -122,6 +123,10 @@ Use `uv` to keep `pyproject.toml` in sync:
   ```bash
   uv add --dev <package>
   ```
+  Note: Dev group already includes optional processor deps used in tests
+  (e.g., `pandas`, `openpyxl`) so test suites don’t fail due to missing
+  extras. If you want to keep a lighter dev env, remove them from
+  `[dependency-groups].dev` and run tests that skip those paths.
 - Docs extras live under `[project.optional-dependencies].docs`. You can also install docs deps directly via:
   ```bash
   pip install -e ".[docs]"
@@ -129,6 +134,13 @@ Use `uv` to keep `pyproject.toml` in sync:
   or with uv extras:
   ```bash
   uv sync --extra docs
+  ```
+  Optional processor extras are grouped under `[project.optional-dependencies].excel`.
+  To install them explicitly (outside of dev group):
+  ```bash
+  pip install -e ".[excel]"
+  # or
+  uv sync --extra excel
   ```
 
 Code style and conventions
