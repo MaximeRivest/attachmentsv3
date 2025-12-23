@@ -1,7 +1,0 @@
-# tst.tst { #attachments.tst.tst }
-
-```python
-tst.tst(m)
-```
-
-Test function.

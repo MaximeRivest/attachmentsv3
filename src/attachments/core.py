@@ -30,24 +30,38 @@ def _route_processor(filename: str, data: bytes) -> Callable[..., dict]:
     return proc
 
 
+def _error_artifact(source: str, error: str) -> dict:
+    """Create a standardized error artifact."""
+    return {
+        "text": "",
+        "images": [],
+        "audio": [],
+        "video": [],
+        "flags": {"source": source, "error": error},
+    }
+
+
 def att(input: str, **options) -> list[dict]:
     """High-level entrypoint: unpack -> route -> process -> collate.
     Returns a flat list of artifacts (dicts).
+
+    All errors are captured in the returned artifacts rather than raised,
+    providing consistent error handling. Check artifact["flags"]["error"]
+    to detect failures.
     """
-    pairs: list[tuple[str, bytes]] = unpack(input)
+    try:
+        pairs: list[tuple[str, bytes]] = unpack(input)
+    except Exception as e:
+        # Unpack failed - return single error artifact
+        return [_error_artifact(input, f"unpack failed: {e}")]
+
     out: list[dict] = []
     for fname, data in pairs:
         proc = _route_processor(fname, data)
         try:
             artifact = proc(data, filename=fname, **options)
         except Exception as e:
-            artifact = {
-                "text": "",
-                "images": [],
-                "audio": [],
-                "video": [],
-                "flags": {"error": str(e), "filename": fname},
-            }
+            artifact = _error_artifact(fname, f"processing failed: {e}")
         # Normalize keys
         artifact.setdefault("text", "")
         artifact.setdefault("images", [])

@@ -1,7 +1,0 @@
-# testy { #attachments.testy }
-
-```python
-testy(m)
-```
-
-Test function.

@@ -170,6 +170,23 @@ def _walk_directory(path: Path) -> list[tuple[str, bytes]]:
     return out
 
 
+_GITHUB_OWNER_REPO_RE = re.compile(r'^[a-zA-Z0-9][-a-zA-Z0-9_.]*[a-zA-Z0-9]?/[a-zA-Z0-9][-a-zA-Z0-9_.]*[a-zA-Z0-9]?(\.git)?$')
+
+
+def _validate_github_owner_repo(owner_repo: str) -> None:
+    """Validate owner/repo format to prevent command injection."""
+    # Strip trailing .git for validation
+    clean = owner_repo.rstrip('.git') if owner_repo.endswith('.git') else owner_repo
+    # Must be exactly owner/repo format with safe characters
+    if not _GITHUB_OWNER_REPO_RE.match(owner_repo):
+        raise ValueError(f"Invalid GitHub owner/repo format: {owner_repo}")
+    # Additional safety: no shell metacharacters or git options
+    dangerous_patterns = ['--', '..', ';', '|', '&', '$', '`', '\n', '\r']
+    for pattern in dangerous_patterns:
+        if pattern in owner_repo:
+            raise ValueError(f"Invalid characters in GitHub spec: {owner_repo}")
+
+
 def _clone_github_to_temp(spec: str) -> Path:
     """Clone a GitHub repository into a temporary directory.
     Supported forms:
@@ -190,6 +207,7 @@ def _clone_github_to_temp(spec: str) -> Path:
             else:
                 repo_path, qs_dict = rest, {}
             owner_repo = repo_path.strip("/")
+            _validate_github_owner_repo(owner_repo)
             url = f"https://github.com/{owner_repo}.git"
             ref = qs_dict.get("ref")
             return url, ref
@@ -200,6 +218,8 @@ def _clone_github_to_temp(spec: str) -> Path:
             if len(parts) != 2:
                 raise ValueError("Unsupported GitHub spec")
             owner, repo = parts
+            owner_repo = f"{owner}/{repo}"
+            _validate_github_owner_repo(owner_repo)
             if not repo.endswith(".git"):
                 repo = repo + ".git"
             ref = dict(urllib.parse.parse_qsl(u.query or "")).get("ref")

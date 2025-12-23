@@ -16,7 +16,12 @@ Public API:
 """
 
 from .core import att
-from .processors import processors, register_processor
+from .processors import (
+    get_processors_copy,
+    processors,
+    register_processor,
+    reset_processors,
+)
 from .unpack import extra_unpack_handlers, register_unpack_handler, unpack
 
 __all__ = [
@@ -24,6 +29,8 @@ __all__ = [
     "unpack",
     "processors",
     "register_processor",
+    "reset_processors",
+    "get_processors_copy",
     "register_unpack_handler",
     "extra_unpack_handlers",
 ]
